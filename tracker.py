@@ -29,7 +29,7 @@ headers = {
     'x-csrf-token': 'x',
 }
 
-csvfile = 'UberX ' + datetime.now().strftime("%d %m %Y") + '.csv'
+csvfile = 'data/' + 'UberX ' + datetime.now().strftime("%d %m %Y") + '.csv'
 
 if os.path.exists(csvfile) == False:
     with open(csvfile, 'a', newline='') as file:
