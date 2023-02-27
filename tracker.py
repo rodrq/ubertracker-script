@@ -29,9 +29,9 @@ headers = {
     'x-csrf-token': 'x',
 }
 
+
+
 csvfile = 'data/' + 'UberX ' + datetime.now().strftime("%d %m %Y") + '.csv'
-
-
 
 def offline_row_filler():
     hour = datetime.now().strftime("%H:%M")
@@ -41,10 +41,11 @@ def offline_row_filler():
         try:
             if last_csv_hour != hour:
                 total_mins_diff = ((int(hour[:2]) - int(last_csv_hour[:2])) * 60) + (int(hour[3:]) - int(last_csv_hour[3:]))
+                if total_mins_diff == 1:
+                    return
                 hours_added = 0
                 with open(csvfile, "a", newline='') as f:
-                        for n in range(total_mins_diff-1):
-                            n+=1
+                        for n in range(total_mins_diff):
                             iter_mins = int(last_csv_hour[3:]) + n
                             iter_hour = int(last_csv_hour[:2])
                             if iter_mins >= 60:
