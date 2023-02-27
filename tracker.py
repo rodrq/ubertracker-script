@@ -31,10 +31,7 @@ headers = {
 
 csvfile = 'data/' + 'UberX ' + datetime.now().strftime("%d %m %Y") + '.csv'
 
-if os.path.exists(csvfile) == False:
-    with open(csvfile, 'a', newline='') as file:
-        writer = csv.writer(file)
-        writer.writerow(["Hora", "Precio"])
+
 
 def offline_row_filler():
     hour = datetime.now().strftime("%H:%M")
@@ -46,7 +43,7 @@ def offline_row_filler():
                 total_mins_diff = ((int(hour[:2]) - int(last_csv_hour[:2])) * 60) + (int(hour[3:]) - int(last_csv_hour[3:]))
                 hours_added = 0
                 with open(csvfile, "a", newline='') as f:
-                        for n in range(total_mins_diff):
+                        for n in range(total_mins_diff-1):
                             n+=1
                             iter_mins = int(last_csv_hour[3:]) + n
                             iter_hour = int(last_csv_hour[:2])
@@ -68,13 +65,45 @@ def offline_row_filler():
                             writer.writerow([to_cvs_hour, "Sin datos: Script offline"])
                         print('Funcion offline_row_filler() usada')
         except:
-            print('Funcion offline_row_filler() usada pero last_hour no era int. Probablemente comparó con el header')
+            print('Rellenando desde las 00:00')
+            with open(csvfile, "r") as f:
+                last_line = f.readlines()[-1]
+                last_csv_hour = last_line[:5]
+                diff = (int(hour[:2]) * 60) + int(hour[3:])
+                hours_added = 0
+                with open(csvfile, "a", newline='') as f:
+                    for n in range(diff-1):
+                        n+=1
+                        iter_mins = 0 + n
+                        iter_hour = 0
+                        if iter_mins >= 60:
+                            if iter_mins % 60 == 0:
+                                hours_added += 1
+                        iter_mins = iter_mins % 60
+                        iter_hour = hours_added
+                        if iter_mins < 10:
+                            iter_mins = '0' + str(iter_mins)
+                        else:
+                            iter_mins = str(iter_mins)
+                        if iter_hour < 10:
+                            iter_hour = '0' + str(iter_hour)
+                        else:
+                            iter_hour = str(iter_hour)
+                        to_cvs_hour = iter_hour + ':' + iter_mins
+                        writer = csv.writer(f)
+                        writer.writerow([to_cvs_hour, "Sin datos: Script offline"])
         else:
-            print('No hubo necesidad de usar offline_row_filler(). last_hour == hour')
+            pass
 
-offline_row_filler()
+
 
 def func():
+    csvfile = 'data/' + 'UberX ' + datetime.now().strftime("%d %m %Y") + '.csv'
+    if os.path.exists(csvfile) == False:
+        with open(csvfile, 'a', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerow(["Hora", "Precio"])
+    offline_row_filler()
     hora = datetime.now().strftime("%H:%M")
     response = requests.request("POST", url, headers=headers, data=payload)
     fare = json.loads(response.text)['data']['products']['tiers'][0]['products'][0]['fare'][4:]
