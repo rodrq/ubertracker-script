@@ -41,8 +41,6 @@ def offline_row_filler():
         try:
             if last_csv_hour != hour:
                 total_mins_diff = ((int(hour[:2]) - int(last_csv_hour[:2])) * 60) + (int(hour[3:]) - int(last_csv_hour[3:]))
-                if total_mins_diff == 1:
-                    return
                 hours_added = 0
                 with open(csvfile, "a", newline='') as f:
                         for n in range(total_mins_diff):
@@ -64,7 +62,6 @@ def offline_row_filler():
                             to_cvs_hour = iter_hour + ':' + iter_mins
                             writer = csv.writer(f)
                             writer.writerow([to_cvs_hour, "Sin datos: Script offline"])
-                        print('Funcion offline_row_filler() usada')
         except:
             print('Rellenando desde las 00:00')
             with open(csvfile, "r") as f:
@@ -95,8 +92,6 @@ def offline_row_filler():
                         writer.writerow([to_cvs_hour, "Sin datos: Script offline"])
         else:
             pass
-
-
 
 def func():
     csvfile = 'data/' + 'UberX ' + datetime.now().strftime("%d %m %Y") + '.csv'
