@@ -39,29 +39,28 @@ def offline_row_filler():
         last_line = f.readlines()[-1]
         last_csv_hour = last_line[:5]
         try:
-            if last_csv_hour != hour:
-                total_mins_diff = ((int(hour[:2]) - int(last_csv_hour[:2])) * 60) + (int(hour[3:]) - int(last_csv_hour[3:]))
-                hours_added = 0
-                with open(csvfile, "a", newline='') as f:
-                        for n in range(total_mins_diff):
-                            iter_mins = int(last_csv_hour[3:]) + n
-                            iter_hour = int(last_csv_hour[:2])
-                            if iter_mins >= 60:
-                                if iter_mins % 60 == 0:
-                                    hours_added += 1
-                            iter_mins = iter_mins % 60
-                            iter_hour = int(last_csv_hour[:2]) + hours_added
-                            if iter_mins < 10:
-                                iter_mins = '0' + str(iter_mins)
-                            else:
-                                iter_mins = str(iter_mins)
-                            if iter_hour < 10:
-                                iter_hour = '0' + str(iter_hour)
-                            else:
-                                iter_hour = str(iter_hour)
-                            to_cvs_hour = iter_hour + ':' + iter_mins
-                            writer = csv.writer(f)
-                            writer.writerow([to_cvs_hour, "Sin datos: Script offline"])
+            total_mins_diff = ((int(hour[:2]) - int(last_csv_hour[:2])) * 60) + (int(hour[3:]) - int(last_csv_hour[3:]))
+            hours_added = 0
+            with open(csvfile, "a", newline='') as f:
+                    for n in range(total_mins_diff):
+                        iter_mins = int(last_csv_hour[3:]) + n
+                        iter_hour = int(last_csv_hour[:2])
+                        if iter_mins >= 60:
+                            if iter_mins % 60 == 0:
+                                hours_added += 1
+                        iter_mins = iter_mins % 60
+                        iter_hour = int(last_csv_hour[:2]) + hours_added
+                        if iter_mins < 10:
+                            iter_mins = '0' + str(iter_mins)
+                        else:
+                            iter_mins = str(iter_mins)
+                        if iter_hour < 10:
+                            iter_hour = '0' + str(iter_hour)
+                        else:
+                            iter_hour = str(iter_hour)
+                        to_cvs_hour = iter_hour + ':' + iter_mins
+                        writer = csv.writer(f)
+                        writer.writerow([to_cvs_hour, "Sin datos: Script offline"])
         except:
             print('Rellenando desde las 00:00')
             with open(csvfile, "r") as f:
