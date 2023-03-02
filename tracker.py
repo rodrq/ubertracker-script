@@ -44,6 +44,7 @@ def main():
         df.to_csv((csvfile), mode='w', header=True, index=False)
 
     ### This fills empty cells if the script wasn't online before.  
+
     if (datetime.now() - timedelta(minutes=1)).strftime('%H:%M') != df.iloc[-1]['Hour']: 
     # Current hour - 1 should equal to last .csv hour if the script didn't stop.
         for i in range(60*24):
@@ -57,6 +58,7 @@ def main():
                 new_row = {'Hour': timestamp_str, 'Price': 'Script was offline'}
                 print(f'{timestamp_str} filled with empty')
                 df.loc[len(df)] = new_row
+
     new_row = {'Hour':datetime.now().strftime('%H:%M'), 'Price': get_price()}
     df.loc[len(df)] = new_row
     df.to_csv(csvfile, mode='w', header=True, index=False)
@@ -66,3 +68,4 @@ schedule.every(config.interval).minutes.at(":00").do(main)
 while True:
     schedule.run_pending()
     time.sleep(1)
+
