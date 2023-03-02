@@ -1,3 +1,4 @@
 config.py   
 data
 old_disaster_tracker.py
+__pycache__
