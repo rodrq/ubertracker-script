@@ -1,8 +1,10 @@
-#Credenciales
+#These are all demonstrative. You should get this data inspecting GraphQL's header and payload AFTER searching for your Uber ride
+
+#Credentials
 sid = 'sid=Lorem Ipsum; '
 csid = 'csid=Lorem Ipsum; '
 
-#Coordenadas a modo de ejemplo
+#Coordinates
 destino = [
             {
                 "latitude": -15.23232323,
@@ -16,5 +18,5 @@ pickup = {
 
 timezone = "America/Buenos_Aires"
 
-#Intervalo entre request de precio (en minutos).
+#Interval in minutes.
 interval = 1 
